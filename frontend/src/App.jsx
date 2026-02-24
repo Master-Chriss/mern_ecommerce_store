@@ -1,0 +1,50 @@
+import { Route, Routes, Navigate } from "react-router-dom"
+import LoginPage from "./pages/LoginPage"
+import HomePage from "./pages/HomePage"
+import SignupPage from "./pages/SignupPage"
+
+import Navbar from "./components/Navbar"
+import { Toaster } from "react-hot-toast"
+import { useEffect } from "react"
+import { useUserStore } from "./stores/useUserStore"
+import LoadingSpinner from "./components/LoadingSpinner"
+import AdminPage from "./pages/AdminPage"
+import CategoryPage from "./pages/CategoryPage"
+
+
+const App = () => {
+  const {user, checkAuth, checkingAuth} = useUserStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  if(checkingAuth) return <LoadingSpinner />
+  return (
+    <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_top,_rgba(229,231,235,0.55)_0%,_rgba(243,244,246,0.5)_45%,_rgba(255,255,255,0.9)_100%)]" />
+        </div>
+      </div>
+
+      
+      <div className="relative z-50 pt-20">
+
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={!user ? <SignupPage /> : <Navigate to="/" />} />
+        <Route path="/login" element={ !user ? <LoginPage /> : <Navigate to="/" />} />
+        <Route path="/secret-dashboard" element={ user?.role === 'admin' ? <AdminPage /> : <Navigate to="/login" />} />
+        <Route path="/category/:category" element={ <CategoryPage /> } />
+      </Routes>
+      </div>
+
+      <Toaster />
+    </div>
+  )
+}
+
+export default App
