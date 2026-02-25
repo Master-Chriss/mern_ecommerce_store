@@ -47,7 +47,7 @@ const Navbar = () => {
 								 transition duration-300 ease-in-out flex items-center'
 								to={"/secret-dashboard"}
 							>
-								<FaLock className='inline-block mr-1' size={18} />
+								<FaLock className='inline-block mr-1' size={16} />
 								<span className='hidden sm:inline'>Dashboard</span>
 							</Link>
 						)}
@@ -58,7 +58,7 @@ const Navbar = () => {
 						            rounded-md flex items-center transition duration-300 ease-in-out'
 								onClick={logout}
 							>
-								<FaSignOutAlt size={18} fill='red' />
+								<FaSignOutAlt size={16} fill='red' />
 								<span className='hidden sm:inline ml-2'>Log Out</span>
 							</button>
 						) : (
@@ -68,7 +68,7 @@ const Navbar = () => {
 									className='bg-[#C9A227] hover:bg-[#B7921F] text-black py-2 px-4 
 									rounded-md flex items-center transition duration-300 ease-in-out'
 								>
-									<FaUserPlus className='mr-2' size={18} />
+									<FaUserPlus className='mr-2' size={16} />
 									Sign Up
 								</Link>
 								<Link
@@ -76,7 +76,7 @@ const Navbar = () => {
 									className='bg-white hover:bg-gray-200 text-black py-2 px-4 
 									rounded-md flex items-center transition duration-300 ease-in-out'
 								>
-									<FaSignInAlt className='mr-2' size={18} />
+									<FaSignInAlt className='mr-2' size={16} />
 									Login
 								</Link>
 							</>
