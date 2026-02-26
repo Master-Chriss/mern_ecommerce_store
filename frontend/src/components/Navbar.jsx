@@ -1,91 +1,111 @@
-import { FaShoppingCart, FaUserPlus, FaSignInAlt, FaSignOutAlt, FaLock } from 'react-icons/fa';
+import {
+	FaShoppingCart,
+	FaUserPlus,
+	FaSignInAlt,
+	FaSignOutAlt,
+	FaLock,
+	FaHome
+} from 'react-icons/fa';
+
 import { Link } from 'react-router-dom';
 import { useUserStore } from '../stores/useUserStore';
 import { useCartStore } from '../stores/useCartStore';
+import logo from '/my-ecommerce-favicon.png';
 
 const Navbar = () => {
+	const { user, logout } = useUserStore();
+	const isAdmin = user?.role === 'admin';
+	const { cart } = useCartStore();
 
-    const {user, logout} = useUserStore();
-    const isAdmin = user?.role === 'admin';
-		const {cart} = useCartStore();
+	return (
+		<header className="fixed top-0 left-0 w-full bg-black/95 backdrop-blur-md shadow-lg z-40 border-b border-gray-800">
+			{/* Fixed height container */}
+			<div className="container mx-auto px-4 h-16 flex items-center justify-between">
+				{/* Logo Section */}
+				<Link to="/" className="flex items-center">
+					<img
+						src={logo}
+						alt="SmartShop Logo"
+						className="h-14 w-auto sm:mr-[-25px] object-contain transition duration-300 hover:scale-105"
+					/>
+					<span className="hidden sm:inline text-white font-bold text-lg tracking-wide">
+						Smart<span className="text-yellow-400">Shop</span>
+					</span>
+				</Link>
 
-  return (
-    <header className='fixed top-0 left-0 w-full bg-black bg-opacity-95 backdrop-blur-md shadow-lg z-40 transition-all duration-300 border-b border-gray-800'>
-			<div className='container mx-auto px-4 py-3'>
-				<div className='flex flex-wrap justify-between items-center'>
-					<Link to='/' className='text-2xl font-bold text-white items-center space-x-2 flex'>
-						E-Commerce
+				{/* Navigation */}
+				<nav className="flex items-center gap-5">
+					<Link
+						to="/"
+						className="text-white hover:text-gray-300 transition duration-300">
+						<FaHome size={20} />
 					</Link>
 
-					<nav className='flex flex-wrap items-center gap-4'>
+					{/* Cart */}
+					{user && (
 						<Link
-							to={"/"}
-							className='text-white hover:text-gray-300 transition duration-300
-					 ease-in-out'
-						>
-							Home
-						</Link>
-						{user && (
-							<Link
-								to={"/cart"}
-								className='relative group text-white hover:text-gray-300 transition duration-300 
-							ease-in-out'
-							>
-								<FaShoppingCart className='inline-block mr-1 group-hover:text-gray-300' size={20} />
-								<span className='hidden sm:inline'>Cart</span>
-								<span
-										className='absolute -top-2 -left-2 bg-[#C9A227] text-black rounded-full px-2 py-0.5 
-									text-xs group-hover:bg-[#B7921F] transition duration-300 ease-in-out'
-									>
-										{cart.length}
-									</span>
-							</Link>
-						)}
-						{isAdmin && (
-							<Link
-								className='bg-[#C9A227] hover:bg-[#B7921F] text-black px-3 py-1 rounded-md font-medium
-								 transition duration-300 ease-in-out flex items-center'
-								to={"/secret-dashboard"}
-							>
-								<FaLock className='inline-block mr-1' size={16} />
-								<span className='hidden sm:inline'>Dashboard</span>
-							</Link>
-						)}
+							to="/cart"
+							className="relative flex items-center text-white hover:text-gray-300 transition duration-300">
+							<FaShoppingCart size={20} />
 
-						{user ? (
-							<button
-								className='bg-white hover:bg-gray-200 text-black py-2 px-4 
-						            rounded-md flex items-center transition duration-300 ease-in-out'
-								onClick={logout}
-							>
-								<FaSignOutAlt size={16} fill='red' />
-								<span className='hidden sm:inline ml-2'>Log Out</span>
-							</button>
-						) : (
-							<>
-								<Link
-									to={"/signup"}
-									className='bg-[#C9A227] hover:bg-[#B7921F] text-black py-2 px-4 
-									rounded-md flex items-center transition duration-300 ease-in-out'
-								>
-									<FaUserPlus className='mr-2' size={16} />
-									Sign Up
-								</Link>
-								<Link
-									to={"/login"}
-									className='bg-white hover:bg-gray-200 text-black py-2 px-4 
-									rounded-md flex items-center transition duration-300 ease-in-out'
-								>
-									<FaSignInAlt className='mr-2' size={16} />
-									Login
-								</Link>
-							</>
-						)}
-					</nav>
-				</div>
+							<span className="hidden sm:inline ml-1">Cart</span>
+
+							{/* Cart Badge */}
+							{cart.length > 0 && (
+								<span
+									className="absolute -top-2 -right-3 bg-[#C9A227] text-black rounded-full 
+                                 min-w-[20px] h-5 flex items-center justify-center 
+                                 text-xs font-semibold">
+									{cart.reduce((s, i) => s + i.quantity, 0)}
+								</span>
+							)}
+						</Link>
+					)}
+
+					{/* Admin Dashboard */}
+					{isAdmin && (
+						<Link
+							to="/secret-dashboard"
+							className="bg-[#C9A227] hover:bg-[#B7921F] text-black px-3 py-1.5 
+                         rounded-md font-medium transition duration-300 
+                         flex items-center gap-1">
+							<FaLock size={14} />
+							<span className="hidden sm:inline">Dashboard</span>
+						</Link>
+					)}
+
+					{/* Auth Buttons */}
+					{user ? (
+						<button
+							onClick={logout}
+							className="bg-white hover:bg-gray-200 text-black py-1.5 px-4 
+                         rounded-md flex items-center gap-2 transition duration-300">
+							<FaSignOutAlt size={14} className="text-red-500" />
+							<span className="hidden sm:inline">Log Out</span>
+						</button>
+					) : (
+						<>
+							<Link
+								to="/signup"
+								className="bg-[#C9A227] hover:bg-[#B7921F] text-black py-1.5 px-4 
+                           rounded-md flex items-center gap-2 transition duration-300">
+								<FaUserPlus size={14} />
+								<span className="hidden sm:inline">Sign Up</span>
+							</Link>
+
+							<Link
+								to="/login"
+								className="bg-white hover:bg-gray-200 text-black py-1.5 px-4 
+                           rounded-md flex items-center gap-2 transition duration-300">
+								<FaSignInAlt size={14} />
+								<span className="hidden sm:inline">Login</span>
+							</Link>
+						</>
+					)}
+				</nav>
 			</div>
 		</header>
 	);
-}
+};
 
-export default Navbar
+export default Navbar;

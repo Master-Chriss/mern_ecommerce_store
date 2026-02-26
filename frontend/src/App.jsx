@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar"
 import { Toaster } from "react-hot-toast"
 import { useEffect } from "react"
 import { useUserStore } from "./stores/useUserStore"
+import { useCartStore } from "./stores/useCartStore"
 import LoadingSpinner from "./components/LoadingSpinner"
 import AdminPage from "./pages/AdminPage"
 import CategoryPage from "./pages/CategoryPage"
@@ -14,10 +15,17 @@ import CategoryPage from "./pages/CategoryPage"
 
 const App = () => {
   const {user, checkAuth, checkingAuth} = useUserStore();
+  const { getCartItems } = useCartStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(() => {
+    if (user) {
+      getCartItems();
+    }
+  }, [user, getCartItems]);
 
   if(checkingAuth) return <LoadingSpinner />
   return (

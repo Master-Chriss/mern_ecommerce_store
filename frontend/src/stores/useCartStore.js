@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios from '../lib/axios';
+import axios from '../lib/axios.js';
 import { toast } from 'react-hot-toast';
 
 export const useCartStore = create((set, get) => ({
@@ -15,7 +15,7 @@ export const useCartStore = create((set, get) => ({
 			get().calculateTotals();
 		} catch (error) {
 			set({ cart: [] });
-			toast.error(error.response.data.error || 'Failed to fetch cart items');
+			toast.error(error.response?.data?.error || 'Failed to fetch cart items');
 		}
 	},
 
@@ -24,27 +24,12 @@ export const useCartStore = create((set, get) => ({
 			await axios.post('/cart', { productId: product._id });
 			toast.success('Added to cart');
 
-			// Fetch normalized cart items (with product details + quantity)
+			set({})
+
 			await get().getCartItems();
-			set((prevState) => {
-				const existingItem = prevState.cart.find(
-					(item) => item.productId === product._id,
-				);
-
-				const newCart = existingItem
-					? prevState.cart.map((item) =>
-							item.productId === product._id
-								? { ...item, quantity: item.quantity + 1 }
-								: item,
-						)
-					: [...prevState.cart, { ...product, quantity: 1 }];
-
-				return { cart: [] };
-			});
-
 			get().calculateTotals();
 		} catch (error) {
-			toast.error(error.response.data.error || 'Failed to add to cart');
+			toast.error(error.response?.data?.error || 'Failed to add to cart');
 		}
 	},
 
