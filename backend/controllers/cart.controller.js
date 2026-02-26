@@ -1,4 +1,3 @@
-import clearCart from '../lib/clearCart.js';
 import Product from '../models/product.model.js';
 
 export const addToCart = async (req, res) => {
@@ -17,7 +16,6 @@ export const addToCart = async (req, res) => {
 		}
 
 		await user.save();
-		clearCart(user._id);
 		res.json(user.cartItems);
         
 	} catch (error) {
