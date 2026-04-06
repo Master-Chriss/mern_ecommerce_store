@@ -48,7 +48,7 @@ export const getDailySalesData = async (startDate, endDate) => {
         ]);
 
         const dateArray = getDateInRange(startDate, endDate);
-        console.log(dateArray);
+        // console.log(dateArray);
         
         return dateArray.map(date => {
             const foundData = dailySalesData.find(item => item._id === date);
