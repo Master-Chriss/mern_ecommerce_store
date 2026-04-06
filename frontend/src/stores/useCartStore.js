@@ -24,7 +24,7 @@ export const useCartStore = create((set, get) => ({
 			await axios.post('/cart', { productId: product._id });
 			toast.success('Added to cart');
 
-			set({})
+			set({});
 
 			await get().getCartItems();
 			get().calculateTotals();

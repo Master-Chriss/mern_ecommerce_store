@@ -11,6 +11,7 @@ import { useCartStore } from "./stores/useCartStore"
 import LoadingSpinner from "./components/LoadingSpinner"
 import AdminPage from "./pages/AdminPage"
 import CategoryPage from "./pages/CategoryPage"
+import CartPage from "./pages/CartPage"
 
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/login" element={ !user ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/secret-dashboard" element={ user?.role === 'admin' ? <AdminPage /> : <Navigate to="/login" />} />
         <Route path="/category/:category" element={ <CategoryPage /> } />
+        <Route path="/cart" element={ user ? <CartPage /> : <LoginPage /> } />
       </Routes>
       </div>
 

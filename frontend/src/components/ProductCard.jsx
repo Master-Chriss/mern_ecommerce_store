@@ -37,6 +37,11 @@ const ProductCard = ({ product }) => {
 						</span>
 					</p>
 				</div>
+				<div className="mt-2 mb-5 flex items-center justify-between">
+					<p className='text-gray-400'>
+					 	{product.description}
+					</p>
+				</div>
 				<button
 					className="flex items-center justify-center rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium
 					 text-white hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300"
