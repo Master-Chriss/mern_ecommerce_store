@@ -106,7 +106,13 @@ export const useCartStore = create((set, get) => ({
 	},
 
 	clearCart: async () => {
-		set({cart: [], coupon: null, total: 0, subtotal: 0})
+		try {
+			await axios.delete('/cart');
+		} catch (error) {
+			toast.error(error.response?.data?.message || 'Failed to clear cart');
+		} finally {
+			set({ cart: [], coupon: null, total: 0, subtotal: 0, isCouponApplied: false });
+		}
 	},
 
 	calculateTotals: () => {
