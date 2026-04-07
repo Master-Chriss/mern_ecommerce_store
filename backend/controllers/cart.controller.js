@@ -28,7 +28,7 @@ export const addToCart = async (req, res) => {
 
 export const removeAllFromCart = async (req, res) => {
 	try {
-		const { productId } = req.body;
+		const { productId } = req.body || {};
 		const user = req.user;
 
 		if (!productId) {
@@ -42,7 +42,7 @@ export const removeAllFromCart = async (req, res) => {
 		await user.save();
 		res.json(user.cartItems);
 	} catch (error) {
-		console.log('Error in removeAllFromCart controller.');
+		console.log('Error in removeAllFromCart controller.', error.message);
 		return res
 			.status(500)
 			.json({ message: 'Server error', error: error.message });

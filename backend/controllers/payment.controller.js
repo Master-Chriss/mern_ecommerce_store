@@ -2,6 +2,7 @@ import Coupon from '../models/coupon.model.js';
 import { stripe } from '../lib/stripe.js';
 import Order from '../models/order.model.js';
 import Product from '../models/product.model.js';
+import User from '../models/user.model.js';
 
 export const createCheckoutSession = async (req, res) => {
     try {
@@ -94,6 +95,7 @@ export const checkoutSuccess = async (req, res) => {
 
         const existingOrder = await Order.findOne({ stripeSessionId: sessionId });
         if (existingOrder) {
+            await User.findByIdAndUpdate(session.metadata.userId, { cartItems: [] });
             return res.status(200).json({
                 success: true,
                 message: "Order already processed.",
@@ -146,6 +148,8 @@ export const checkoutSuccess = async (req, res) => {
         });
 
         await newOrder.save();
+        await User.findByIdAndUpdate(session.metadata.userId, { cartItems: [] });
+
         res.status(200).json({
             success: true,
             message: "Payment successful, order created, and coupon deactivated if used.",
