@@ -90,10 +90,10 @@ export const deleteProduct = async (req, res) => {
 
 export const getRecommendedProducts =  async (req, res) => {
     try {
-        const products = await products.aggregate([
+        const products = await Product.aggregate([
             {
                 $sample: {
-                    size: 3
+                    size: 6
                 }
             }, 
             {
@@ -107,9 +107,9 @@ export const getRecommendedProducts =  async (req, res) => {
             }
         ]);
 
-        res.json({products});
+        res.json(products);
     } catch (error) {
-        console.log("Error in Recommendations controller.");
+        console.error("Error details", error);
         return res.status(500).json({message: "Server error", error: error.message});
     }
 };
