@@ -1,0 +1,38 @@
+{
+  "name": "e-commerce_store",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "backend/server.js",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "nodemon backend/server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.8.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "ioredis": "^5.8.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.0.0",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.12",
+    "nodemon": "^3.1.11",
+    "socket.io": "^4.8.1",
+    "stripe": "^20.1.0",
+    "validator": "^13.15.23"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.6.2"
+  }
+}
