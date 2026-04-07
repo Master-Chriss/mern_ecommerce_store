@@ -3,6 +3,10 @@ import { useCartStore } from "../stores/useCartStore";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { FaShoppingCart } from "react-icons/fa";
+import CartItem from "../components/CartItem";
+import PeopleAlsoBought from "../components/PeopleAlsoBought";
+import OrderSummary from "../components/OrderSummary";
+import GiftCouponCard from "../components/GiftCouponCard";
 
 const CartPage = () => {
 	const { cart } = useCartStore();
@@ -17,8 +21,18 @@ const CartPage = () => {
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ duration: 0.5, delay: 0.2 }}
 					>
-
+						{cart.length === 0 ? (
+							<EmptyCartUI />
+						) : (
+							<div className='space-y-6'>
+								{cart.map((item) => (
+									<CartItem key={item._id} item={item} />
+								))}
+							</div>
+						)}
+						{cart.length > 0 && <PeopleAlsoBought />}
 					</motion.div>
+
 					{cart.length > 0 && (
 						<motion.div
 							className='mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full'
@@ -26,7 +40,8 @@ const CartPage = () => {
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.5, delay: 0.4 }}
 						>
-						Gift card coupon
+							<OrderSummary />
+							<GiftCouponCard />
 						</motion.div>
 					)}
 				</div>
@@ -47,7 +62,7 @@ const EmptyCartUI = () => (
 		<h3 className='text-2xl font-semibold '>Your cart is empty</h3>
 		<p className='text-gray-400'>Looks like you {"haven't"} added anything to your cart yet.</p>
 		<Link
-			className='mt-4 rounded-md bg-emerald-500 px-6 py-2 text-white transition-colors hover:bg-emerald-600'
+			className='mt-4 rounded-md bg-black/95 px-6 py-2 text-white transition-colors hover:bg-emerald-600'
 			to='/'
 		>
 			Start Shopping
