@@ -12,7 +12,7 @@ import path from 'path';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 const __dirname = path.resolve();
 
@@ -34,7 +34,7 @@ if(process.env.NODE_ENV === 'productioon') {
     })
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     connectDB();
     console.log(`Server started at http://localhost:${PORT}`);
 });
