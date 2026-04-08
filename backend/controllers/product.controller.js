@@ -5,10 +5,10 @@ import cloudinary from "../lib/cloudinary.js";
 export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find({});
-        res.json({products});
+        return res.json({products});
     } catch (error) {
         console.log("Error in product controller");
-        res.status(500).json({message: "Server error", error: error.message});
+        return res.status(500).json({message: "Server error", error: error.message});
     }
 }
 
@@ -17,23 +17,23 @@ export const getFeaturedProducts = async (req, res) => {
         let featuredProducts = await redis.get("featured_products");
 
         if(featuredProducts) {
-            res.json(JSON.parse(featuredProducts));
+            return res.json(JSON.parse(featuredProducts));
         }
 
         // if not in redis, fetch em from the mongodb
         featuredProducts = await Product.find({isFeatured: true}).lean();
 
-        if(!featuredProducts) {
-            res.status(404).json({message: "No featured products found"});
+        if(!featuredProducts.length) {
+            return res.status(404).json({message: "No featured products found"});
         }
 
         // if found in mongodb, store in redis for future quick access
         await redis.set("featured_products", JSON.stringify(featuredProducts));
 
-        res.json(featuredProducts);
+        return res.json(featuredProducts);
     } catch (error) {
         console.log("Error in product controller");
-        res.status(500).json({message: "Server error", error: error.message});
+        return res.status(500).json({message: "Server error", error: error.message});
     }
 };
 
@@ -56,7 +56,7 @@ export const createProduct = async (req, res) => {
          return res.status(201).json(product);
     } catch (error) {
         console.log("Error in the product controller 😂😂😂", error.message);
-        res.status(500).json({message: "Error in product controller", error: error.message});
+        return res.status(500).json({message: "Error in product controller", error: error.message});
     }
 };
 
@@ -80,7 +80,7 @@ export const deleteProduct = async (req, res) => {
         }
 
         await Product.findByIdAndDelete(req.params.id);
-        res.status(200).json({message: "Product deleted successfully"});    
+        return res.status(200).json({message: "Product deleted successfully"});    
 
     } catch (error) {
         console.log("Error in deleteProduct controller.")
@@ -107,7 +107,7 @@ export const getRecommendedProducts =  async (req, res) => {
             }
         ]);
 
-        res.json(products);
+        return res.json(products);
     } catch (error) {
         console.error("Error details", error);
         return res.status(500).json({message: "Server error", error: error.message});
@@ -119,7 +119,7 @@ export const getProductsByCategory = async (req, res) => {
     
     try {
         const products = await Product.find({category});
-        res.json({products});
+        return res.json({products});
     } catch (error) {
         console.log("Error in getProductsByCategory controller.");
         return res.status(500).json({message: "Server error", error: error.message});
@@ -134,7 +134,7 @@ export const toggleFeaturedProduct = async (req, res) => {
             product.isFeatured = !product.isFeatured;
             const updatedProduct = await product.save();
             await updateFeaturedProductCache();
-            res.json(updatedProduct);
+            return res.json(updatedProduct);
         } else {
             return res.status(404).json({message: "Product not found"});
         }

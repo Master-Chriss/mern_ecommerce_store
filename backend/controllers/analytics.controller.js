@@ -20,9 +20,9 @@ export const getAnalyticsData = async () => {
 
     return {
         users: totalUsers,
-        products: totalProducts.
+        products: totalProducts,
         totalSales,
-        totalRevenue
+        totalRevenue,
     };
 };
 
@@ -50,18 +50,18 @@ export const getDailySalesData = async (startDate, endDate) => {
         const dateArray = getDateInRange(startDate, endDate);
         // console.log(dateArray);
         
-        return dateArray.map(date => {
-            const foundData = dailySalesData.find(item => item._id === date);
+        return dateArray.map((date) => {
+            const foundData = dailySalesData.find((item) => item._id === date);
 
             return {
                 date,
                 sales: foundData?.sales || 0,
                 revenue: foundData?.revenue || 0,
-            }
+            };
         });
     } catch (error) {
         console.log("Error in getDailySalesDate function.", error.message);
-        return res.status(500).json({message: "Server error", error: error.message});
+        throw error;
     }
 };
 
@@ -71,7 +71,7 @@ const getDateInRange = (startDate, endDate) => {
     let currentDate = new Date(startDate);
 
     while(currentDate <= endDate) {
-        dates.push(currentDate.toISOString().split("I")[0]);
+        dates.push(currentDate.toISOString().split("T")[0]);
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
